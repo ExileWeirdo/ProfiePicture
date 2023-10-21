@@ -1,38 +1,38 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Welcome to the Page!</h1>
 
     <div id="profilePictureContainer">
-        <img id="profilePicture" src="" alt="Profile Picture">
+      <img id="profilePicture" src="" alt="Profile Picture" />
     </div>
 
     <form action="/logout" method="get">
-        <button type="submit">Log out</button>
-    </form> 
+      <button type="submit">Log out</button>
+    </form>
 
     <script>
-        const profilePicture = document.getElementById('profilePicture')
-        const urlParams = new URLSearchParams(window.location.search)
-        const userProfileType = urlParams.get('profileType')
+      const profilePicture = document.getElementById("profilePicture");
+      const urlParams = new URLSearchParams(window.location.search);
+      const userProfileType = urlParams.get("profileType");
 
-        const profileImageMap = {
-            bunny: 'bunnyImagePic.jpg',
-            cat: 'catImagePic.jpg',
-            dog: 'dogImagePic.jpg',
-            eagle: 'eagleImagePic.jpg',
-            monkey: 'monkeyImagePic.jpg',
-            rhino: 'rhinoImagePic.jpg',
-        }
+      const profileImageMap = {
+        bunny: "bunnyImagePic.jpg",
+        cat: "catImagePic.jpg",
+        dog: "dogImagePic.jpg",
+        eagle: "eagleImagePic.jpg",
+        monkey: "monkeyImagePic.jpg",
+        rhino: "rhinoImagePic.jpg",
+      };
 
-        if (profileImageMap[userProfileType]) {
-            profilePicture.src = `/images/${profileImageMap[userProfileType]}`
-        }
+      if (profileImageMap[userProfileType]) {
+        profilePicture.src = `/images/${profileImageMap[userProfileType]}`;
+      }
     </script>
-</body>
+  </body>
 </html>
