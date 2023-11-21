@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit page</title>
+</head>
+<body>
+    <form action="/edit" id="editForm" method="post">
+        <select id="profileType" name="profileType" title="New Profile Picture">
+            <option value="bunny">Bunny</option>
+            <option value="cat">Cat</option>
+            <option value="dog">Dog</option>
+            <option value="eagle">Eagle</option>
+            <option value="monkey">Monkey</option>
+            <option value="rhino">Rhino</option>
+        </select>
+        <div>
+            <input type="text" id="newUsername" name="newUsername" placeholder="New Username" required>
+          </div>
+          <div>
+            <input type="password" id="newPassword" name="newPassword" placeholder="New Password" required>
+        </div>
+        <button type="submit">Edit Info</button>
+        <a href="/login"><button type="button">Cancel</button></a>
+    </form>
+</body>
+</html>

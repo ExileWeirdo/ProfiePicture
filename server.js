@@ -16,8 +16,23 @@ app.use(
   }),
 );
 
-app.get(["/", "/index"], isAuthenticated, (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+
+var userProfilePicture = ""
+var userName = "";
+app.get("/", isAuthenticated, (req, res) => {
+  fs.readFile("index.html", 'utf-8', function(err, data){
+    if (err) {
+      return console.log(err)
+    }
+    const result = data.replace("profilePictureUser", userProfilePicture)
+    console.log(userProfilePicture)
+    fs.writeFile(userName + ".html", result, 'utf-8', function (err) {
+      if (err){
+        return console.log(err)
+      }
+    })
+  })
+  res.sendFile(path.join(__dirname + "/" + userName + ".html"));
 });
 
 app.get("/register", (req, res) => {
@@ -70,8 +85,10 @@ app.post("/login", (req, res) => {
       if (username === savedUsername) {
         if (password === savedPassword) {
           req.session.authenticated = true;
-          const userProfileType = savedProfileType;
-          res.redirect(`/index?profileType=${userProfileType}`);
+          userName = savedUsername;
+          req.session.username = savedUsername
+          userProfilePicture = "/images/" + savedProfileType + "ImagePic.jpg";
+          res.redirect("/")
           userFound = true;
           break;
         } else {
@@ -85,6 +102,47 @@ app.post("/login", (req, res) => {
     }
   });
 });
+
+app.get('/edit', (req, res) => {
+  res.sendFile(path.join(__dirname, "edit.html"));
+})
+
+app.post('/edit', isAuthenticated, (req, res) => {
+  const newUsername = req.body.newUsername;
+  const newPassword = req.body.newPassword;
+  const newProfileType = req.body["profileType"];
+
+  fs.readFile("registrations.txt", "utf8", (err, data) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).send("Internal server error");
+    }
+
+    const lines = data.split("\n");
+
+    for (let i = 0; i < lines.length; i++){
+     
+      const [savedProfileType, savedPassword, savedUsername] = lines[i].split(";");
+      console.log(`Comparing: ${userName} with ${savedUsername}`);
+      if (savedUsername === userName) {
+        lines[i] = `${newProfileType};${newPassword};${newUsername}`;
+        const updatedData = lines.join("\n");
+
+        fs.writeFile("registrations.txt", updatedData, (err) => {
+          if (err){
+            console.log (err);
+            return res.status(500).send("Internal Server Error");
+          }
+
+          res.redirect('/login')
+        });
+        return;
+      }
+    }
+
+    res.status(500).send("User not found!");
+  })
+})
 
 function isAuthenticated(req, res, next) {
   if (req.session.authenticated) {
@@ -104,5 +162,5 @@ app.get("/logout", (req, res) => {
 });
 
 app.listen(5000, () => {
-  console.log("Server is running on port 5000");
+  console.log("Server is running on port 5000");''
 });
